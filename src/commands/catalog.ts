@@ -45,7 +45,7 @@ catalogCommand
     try {
       const limit = parseInt(opts.limit, 10);
       const params = new URLSearchParams({ search: query, limit: String(limit) });
-      const res = (await printfulFetch("GET", `/v2/catalog-products?${params}`)) as {
+      const res = (await printfulFetch("GET", `/v2/catalog-products?${params}`, undefined, { skipStoreId: true })) as {
         data: CatalogProduct[];
         paging: PagingInfo;
       };
@@ -84,7 +84,9 @@ catalogCommand
         const params = new URLSearchParams({ limit: String(pageSize), offset: String(offset) });
         const res = (await printfulFetch(
           "GET",
-          `/v2/catalog-products/${productId}/catalog-variants?${params}`
+          `/v2/catalog-products/${productId}/catalog-variants?${params}`,
+          undefined,
+          { skipStoreId: true }
         )) as { data: CatalogVariant[]; paging: PagingInfo };
 
         allVariants = allVariants.concat(res.data);
@@ -112,7 +114,9 @@ catalogCommand
         const priceParams = new URLSearchParams({ limit: String(pricePageSize), offset: String(priceOffset) });
         const pricesRes = (await printfulFetch(
           "GET",
-          `/v2/catalog-products/${productId}/prices?${priceParams}`
+          `/v2/catalog-products/${productId}/prices?${priceParams}`,
+          undefined,
+          { skipStoreId: true }
         )) as { data: { currency: string; variants: VariantPrice[] }; paging: PagingInfo };
 
         for (const vp of pricesRes.data.variants) {

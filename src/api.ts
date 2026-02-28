@@ -5,7 +5,8 @@ const BASE_URL = "https://api.printful.com";
 export async function printfulFetch(
   method: string,
   path: string,
-  body?: unknown
+  body?: unknown,
+  options?: { skipStoreId?: boolean }
 ): Promise<unknown> {
   const { token, storeId } = getConfig();
 
@@ -13,7 +14,7 @@ export async function printfulFetch(
     Authorization: `Bearer ${token}`,
     "Content-Type": "application/json",
   };
-  if (storeId) {
+  if (storeId && !options?.skipStoreId) {
     headers["X-PF-Store-Id"] = storeId;
   }
 
