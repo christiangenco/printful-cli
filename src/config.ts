@@ -5,7 +5,8 @@ export function getConfig() {
   if (!token) {
     throw new Error("Missing PRINTFUL_API_TOKEN in environment. See .env.example");
   }
-  return { token };
+  const storeId = process.env.PRINTFUL_STORE_ID || undefined;
+  return { token, storeId };
 }
 
 export interface ShippingAddress {

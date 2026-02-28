@@ -7,14 +7,19 @@ export async function printfulFetch(
   path: string,
   body?: unknown
 ): Promise<unknown> {
-  const { token } = getConfig();
+  const { token, storeId } = getConfig();
+
+  const headers: Record<string, string> = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+  if (storeId) {
+    headers["X-PF-Store-Id"] = storeId;
+  }
 
   const res = await fetch(`${BASE_URL}${path}`, {
     method,
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
+    headers,
     body: body ? JSON.stringify(body) : undefined,
   });
 
